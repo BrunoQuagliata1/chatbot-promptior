@@ -1,0 +1,49 @@
+# The manifest for the "dev" environment.
+# Read the full specification for the "Environment" type at:
+#  https://aws.github.io/copilot-cli/docs/manifest/environment/
+
+# The manifest for the 'promptior-service'.
+# Read the full specification for the 'Load Balanced Web Service' type at:
+# https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/
+
+
+image:
+  build: ./Dockerfile
+  port: 8080
+
+http:
+  path: '*'
+  healthcheck:
+    path: '/healthcheck'
+
+cpu: 256
+memory: 512
+count: 1
+
+network:
+  vpc:
+    placement: 'public'
+
+scaling:
+  minCount: 1
+  maxCount: 3
+  targetCPU: 70
+
+
+# Your environment name will be used in naming your resources like VPC, cluster, etc.
+name: dev
+type: Environment
+
+# Import your own VPC and subnets or configure how they should be created.
+# network:
+#   vpc:
+#     id:
+
+# Configure the load balancers in your environment, once created.
+# http:
+#   public:
+#   private:
+
+# Configure observability for your environment resources.
+observability:
+  container_insights: false

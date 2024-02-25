@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import json
 from dotenv import load_dotenv
 import os
 from app.vector_db import query_vector_db, vectorize_text
@@ -34,6 +33,11 @@ def generate_response(question, documents):
         return answer_text
     else:
         return "Sorry, I couldn't generate a response."
+    
+@app.get("/")
+async def healthcheck():
+    return {"status": "ok"}
+
 
 @app.post("/ask")
 async def ask_question(question: Question):
